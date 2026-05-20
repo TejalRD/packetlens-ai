@@ -19,19 +19,24 @@ public class OllamaService {
     public String analyzePacketData(String packetData) {
 
         String prompt = """
-                You are a network troubleshooting assistant.
+        You are a network troubleshooting assistant.
 
-                Analyze the following packet capture / Wireshark summary.
+        Analyze the following packet capture / Wireshark summary.
 
-                Return the answer in this format:
-                1. Traffic Summary
-                2. Detected Issue
-                3. Evidence
-                4. Likely Root Cause
-                5. Recommended Debugging Steps
+        Important rules:
+        - Do not claim this is a SYN flood unless the packet data clearly shows unusually high-volume SYN traffic from one or more sources.
+        - If SYN packets are sent but no SYN-ACK is received, describe it as TCP connection timeout, blocked port, unreachable host, or service not listening.
+        - Be practical and concise.
 
-                Packet Data:
-                """ + packetData;
+        Return the answer in this format:
+        1. Traffic Summary
+        2. Detected Issue
+        3. Evidence
+        4. Likely Root Cause
+        5. Recommended Debugging Steps
+
+        Packet Data:
+        """ + packetData;
 
         Map<String, Object> requestBody = Map.of(
                 "model", "mistral",
