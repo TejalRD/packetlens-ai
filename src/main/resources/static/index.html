@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PacketLens AI</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #response {
+            margin-top: 30px;
+            white-space: pre-wrap;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>PacketLens AI</h1>
+
+<textarea id="packetData"
+placeholder="Paste Wireshark or tshark logs here..."></textarea>
+
+<br>
+
+<button onclick="analyzePacket()">
+    Analyze
+</button>
+
+<div id="response"></div>
+
+<script>
+
+async function analyzePacket() {
+
+    const packetData =
+        document.getElementById("packetData").value;
+
+    const response = await fetch("/analyze", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            packetData: packetData
+        })
+    });
+
+    const result = await response.text();
+
+    document.getElementById("response").innerText = result;
+}
+
+</script>
+
+</body>
+</html>
